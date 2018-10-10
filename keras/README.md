@@ -44,4 +44,23 @@ tf.placeholder(), th.tensor.matrix(), th.tensor.tensor3(), 등등 동일하게 �
         a = K.softmax(b)
         a = K.concatenate([b,c], axis=-1)
         
-      
+
+### Preprocessing
+
+   * Text Preprocessing
+   
+        *Tokenizer*
+        
+        tf-idf 기반으로 각각의 텍스트를 정수 시퀀스 또는 토큰 계수를 바이너리가 될수 있는 벡터로 바꿔주는 역할을 합니다.
+        
+            사용 예)
+        
+            keras.prepocessing.text.Tokenizer((num_words=None, filters='!"#$%&()*+,-./:;<=>?@[\]^_`{|}~', lower=True, split=' ', char_level=False, oov_token=None, document_count=0)
+            
+            num_words: 단어빈도에 따라 보관할 최대 단어수
+            filters: 필터링되는 문자열(기본값은 모든 구두점과 탭 및 줄 바꿈 제외)
+            lower: 소문자로 변환여부
+            split: 단어 분리용 구분 기호
+            char_level: 토큰 처리 여부     
+            oov_token: word_index 추가 및 text_to_sequence 호출 중에서 out-of-vacabulary 대체 
+        
