@@ -294,7 +294,102 @@ Merging, Joining & Concatenating
     
     
     
+Pandas Operations
+    
+    import numpy as np
+    import pandas as pd
+    
+    df = pd.DataFrame({'col1':[1,2,3,4],
+                       'col2':[444,555,666,444],
+                       'col3':['abc','def','ghi','xyz']})
 
+    df.head()
+    
+    df['col2'].unique()
+    #output: array([444, 555, 666], dtype=int64)
+    
+    len(df['col2'].unique())
+    
+    df['col2'].value_counts()
+    
+    df[df['col1']>2]
+    
+    df[(df['col1']>2) & (df[df['col2']==444])]
+    
+    def times2(x):
+        return x*2
+
+    df['col1'].apply(times2)
+    
+    df['col3'].apply(len)
+    
+    df['col2'].apply(lambda x: x*2)
+    
+    #df.drop('col1',axis=1, inplace=True)
+    
+    df.columns
+    # output: Index(['col1','col2','col3'], dtype='object')
+    
+    df.index
+    # output: RangeIndex(start=0, stop=4, step=1)
+    
+    df.sort_values('col2')
+    
+    df.isnull()
+    
+    data = {'A':['foo','foo','foo','bar','bar','bar'],
+            'B':['one','one','two','two','one','one'],
+            'C':['x','y','x','y','x','y],
+            'D':[1,3,2,5,4,1]}
+
+    df = pd.DataFrame(data)
+    
+    df.pivot_table(values='D',index=['A','B'],columns=['C'])
+    
+Data input and output
+
+    import pandas as pd
+    
+    pd.read_csv('example.csv')
+    
+    df = pd.read_csv('example.csv')
+    
+    df.to_csv('My_output', index=False)
+    
+    pd.read_csv('My_output')
+    
+    #conda install xlrd
+    
+    pd.read_excel('Excel_Sample.xlsx', sheetname='Sheet1')
+    
+    df.to_excel('Excel_Sample2.xlsx',sheet_name='NewSheet')
+    
+    data = pd.read_html('https://www.fdic.gov/bank/individual/failed/banklist.html')
+    
+    type(data)
+    # Output: list
+    
+    data[0].head()
+    
+    # Sqlite
+    from sqlalchemy import create_engine
+    
+    engine = create_engine('sqlite:///:memory:')
+    
+    df.to_sql('my_table',engine)
+    
+    sqldf = pd.read_sql('my_table', con=engine)
+    
+    sqldf
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
 
     
