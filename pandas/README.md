@@ -383,7 +383,105 @@ Data input and output
     sqldf
     
     
+### visualization
+
+    import numpy as np
+    import seaborn as sns
+    import pandas as pd
     
+    # matplotlib inline
+    
+    df1 = pd.read_csv('df1', index_col=0)
+    df1.head()
+    
+    df2 = pd.read_csv('df2')
+    df2.head()
+    
+    df1['A'].hist(bins=30)
+    
+    df1['A'].plot(kind='hist', bins=30)
+    
+    df1['A'].plot.hist()
+    
+    df2.plot.area(alpha=0.4)
+    
+    df2.plot.bar()
+    
+    df2.plt.bar(stacked=True)
+    
+    
+    df1['A].plot.hist(bins=50)
+    
+    
+    df1.plot.line(x=df1.index, y='B', figsize=(12,3), lw=1)
+    
+    
+    df1.plot.scatter(x='A',y='B', c='C', cmap='coolwarm')
+    
+    df1.plot.scatter(x='A', y='B', s=df1['C']*100)
+    
+    df2.plot.box()
+    
+    
+    df = pd.DataFrame(np.random.randn(1000,2), columns=['a','b'])
+    
+    df.plot.hexbin(x='a',y='b' , gridsize=25, cmap='coolwarm')
+    
+    
+    
+    df2['a'].plot.kde()
+    
+    df2['a'].plot.densitiy()
+    
+
+### Time Series Visualization
+
+    import pandas as pd
+    import matplotlib.pyplot as plt
+    # %matplotlib inline
+    # %matplotlib notebook
+    
+    mcdon = pd.read_csv('mcdonalds.csv', index_col = 'Data', parse_date=True)
+    mcdon.head()
+    
+    
+    mcdon.plot()
+    
+    mcdon['Adj. Close'].plot()
+    
+    mcdon['Adj. Volume'].plot(figsize=(12,4))
+    
+    
+    mcdon['Adj. Close'].plot(xlim=['2007-01-01', '2009-01-01'], ylim=(20,50))
+    
+    mcdon['Adj. Close'].plot(xlim=['2007-01-01', '2009-01-01'], ylim=(20,50), ls='--',c='red')
+    
+    
+    import matplotlib.dates as dates
+    mcdon['Adj. Close'].plot(xlim=['2007-01-01', '2009-01-01'], ylim=(0,50))
+    
+    
+    idx = mcdon.loc['2007-01-01':'2007-05-01'].index
+    
+    stock = mcdon.loc['2007-01-01':'2007-05-01']['Adj. Close']
+    
+    
+    fig, ax = plt.subplots()
+    ax.plot_date(idx, stock, '-')
+    
+    ax.yaxis.grid(True)
+    ax.xaxis.grid(True)
+    
+    #Locating
+    #ax.xaxis.set_major_locator(dates.MonthLocator())
+    #Formating
+    #ax.xaxis.set_major_formatter(dates.DateFormatter('\n\n%b-%Y'))
+    
+    #ax.xaxis.set_minor_locator(dates.WeekdayLocator(byweekday=0))
+    #ax.xaxis.set_minor_formatter(dates.DateFormatter('%a'))
+    
+    fig.autofmt_xdate()
+    plt.tight_layout()
     
     
     
