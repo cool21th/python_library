@@ -484,6 +484,55 @@ Data input and output
     plt.tight_layout()
     
     
+## Datetime Index
+
+    import numpy as np
+    import pandas as pd
+    import matplotlib.pyplot as plt
+    # %matplotlib inline
+    
+    from datetime import datetime
+    
+    my_year = 2017
+    my_month = 1
+    my_day = 2
+    my_hour = 13
+    my_minute =30
+    my_second = 15
+    
+    my_date = datetime(my_year, my_month, my_day)
+    
+    my_date_time = datetime(my_year, my_month, my_day, my_hour, my_minute, my_second)
+    type(my_date_time)
+    
+    my_date_time.day
+    
+    my_date_time.month
+    
+    
+    first_two = [datetime(2016,1,1), datetime(2016, 1, 2)]
+    type(first_two)
+    
+    dt_ind = pd.DatetimeIndex(first_two)
+    
+    
+    data = np.random.randn(2,2)
+    
+    cols = ['a','b']
+    
+    
+    df = pd.DataFrame(data, dt_ind, cols)
+    
+    df.index.argmaax()
+    
+    df.index.max()
+    
+    df.index.argmin()
+    
+    df.index.min()
+    
+    
+    
     
     
     
