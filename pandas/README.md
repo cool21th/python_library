@@ -532,6 +532,120 @@ Data input and output
     df.index.min()
     
     
+## Time Resampling
+
+보통 Data는 DateTime Index로 가져오지만, 실제적으로 주기적인 형태(monthly, quaterly) 의 Data모습에서 insight를 가져온다. 
+Pandas에서 frequency sampling tool을 제공하여, 좀더 쉽게 groupby를 할수 있도록 도와준다. 
+
+[resampling time series offset string](http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases)
+
+    import numpy as np
+    import pandas as pd
+    import matplotlib.pyplot as plt
+    # %matplotlib inline
+    
+    df = pd.read_csv('time_data/walmart_stock.csv')
+    
+    
+    df.head()
+    
+    df.info()
+    
+    # Date 의 형태가 object이기 때문에 datetime64 형태로 변환
+    df['Date'] = pd.to_datetime(df['Date'])
+    # df['Date'] = df['Date'].apply(pd.to_datetime) 
+    
+    df.set_index('Date', inplace=True)
+    
+    # Data를 읽어올때 parse_dates를 통해 Date 타입으로 변환할 수 있다.
+    df = pd.read_csv('time_data/walmart_stock.csv', index_col='Date', parse_dates=True)
+    
+    # reample 에서 rule은  groupby method가 된다
+    # year 기준으로 평균
+    df.resample(rule='A').mean()
+    
+    # quaterly 기준으로 평균
+    df.resample(rule='Q').mean()
+    
+    # Business quaterly (work day)기준
+    df.resample(rule='BQ').mean()
+    
+    df.resample(rule='A').max()
+    
+    def first_day(entry):
+        return entry[0]
+    
+    df.resample('A').apply(firtst_day)
+    
+    df['Close'].resample('M').mean().plot(kind='bar', figsize=(16,6))
+    
+
+## Time Shifts
+
+모델에 따라 Time step에 맞춰 data를 forward or backward로 옮겨야 할때가 있다. 
+
+    import numpy as np
+    import pandas as pd
+    import matplotlib.pyplot as plt
+    # %matplotlib inline
+    
+    df = pd.read_csv('time_data/walmart_stock.csv', index_col='Date', parse_dates=True)
+    
+    df.head()
+    
+    df.tail()
+    
+    df.shift(periods=1).head()
+    
+    df.head()
+    
+    # tshift는 각 기준의 시간의 끝으로 보낸다
+    df.tshift(freq='M').head()
+    
+
+## Pandas Rolling and Expanding
+
+Often daily financial data can be a bit noisy. 
+Rolling mean(often called Moving Average) to get more signal about the general trend of the data
+
+    import numpy as np
+    import pandas as pd
+    import matplotlib.pyplot as plt
+    # %matplotlib inline
+    
+    df = pd.read_csv('time_data/walmart_stock.csv', index_cols='Date', parse_dates=True)
+    
+    df.head()
+    
+    df['Open'].plot(figsize=(16,6))
+    
+    df.rolling(7).mean().head()
+    
+    df['Open'].plot()
+    df.rolling(window=7).mean()['Close'].plot(figsize=(16,6))
+    
+    df['Close 30 Day MA'] = df['Close'].rolling(window=30).mean()
+    df[['Close 30 Day MA', 'Close'].plot(figsize=(16,6))
+    
+    
+    df['Close'].expanding().mean().plot(figsize=(16,6))
+    
+
+## Bollinger Band
+
+    # Close 20 MA
+    df['Close: 20 Day Mean'] = df['Close'].rolling(20).mean()
+    
+    # Upper = 20MA + 2*std(20)
+    df['Upper']= df['Close: 20 Day Mean'] + 2*(df['Close'].rolling(20).std())
+    
+    # Lower = 20MA - 2*std(20)
+    df['Lower']= df['Close: 20 Day Mean'] - 2*(df['Close'].rolling(20).std())
+    
+    # Close
+    df[['Close','Close: 20 Day Mean','Upper','Lower']].plot(figsize=(16,6))
+    
+    df[['Close','Close: 20 Day Mean','Upper','Lower']].tail(200).plot(figsize=(16,6))
     
     
     
